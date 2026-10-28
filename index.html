@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LSAT Study (private)</title>
+<style>
+:root{--blue:#1865f2;--blue-d:#0b4ac4;--blue-l:#e8f0fe;--green:#14a37f;--green-d:#0e7a5f;--green-l:#e3f6f0;--red:#d92916;--red-l:#fdecea;--amber:#f5a623;--amber-l:#fff4de;--ink:#21242c;--mute:#5f6673;--line:#dde1e7;--bg:#f4f6f9;--card:#fff}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;font-size:16px}
+button{font:inherit;cursor:pointer}
+.top{position:sticky;top:0;z-index:20;background:#0a2540;color:#fff;display:flex;align-items:center;gap:14px;padding:0 16px;height:56px}
+.brand{font-weight:700;font-size:18px;letter-spacing:.2px;white-space:nowrap}
+.brand small{font-weight:500;font-size:11px;background:var(--green);padding:2px 7px;border-radius:10px;margin-left:6px;vertical-align:middle}
+.menu{display:none;background:none;border:0;color:#fff;font-size:22px;padding:4px 8px}
+.tabs{display:flex;gap:4px;margin-left:auto;height:100%}
+.tabs button{background:none;border:0;color:#b9c8da;padding:0 14px;height:100%;border-bottom:3px solid transparent;font-weight:600}
+.tabs button.on{color:#fff;border-bottom-color:var(--green)}
+.tabs button:hover{color:#fff}
+.layout{display:flex;min-height:calc(100vh - 56px)}
+aside{width:290px;flex:none;background:#fff;border-right:1px solid var(--line);padding:16px 14px 30px;overflow-y:auto;position:sticky;top:56px;height:calc(100vh - 56px)}
+main{flex:1;min-width:0;padding:24px;max-width:1100px;margin:0 auto;width:100%}
+.layout.nosb aside{display:none}
+.sb-h{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--mute);margin:18px 6px 6px}
+.sb-item{display:block;width:100%;text-align:left;background:none;border:0;border-radius:8px;padding:8px 10px;color:var(--ink)}
+.sb-item:hover{background:var(--bg)}
+.sb-item.on{background:var(--blue-l)}
+.sb-item .nm{display:flex;justify-content:space-between;gap:8px;font-weight:600;font-size:14.5px}
+.sb-item .nm span:last-child{font-weight:500;color:var(--mute);font-size:12.5px}
+.bar{height:8px;background:#e6e9ee;border-radius:6px;overflow:hidden;display:flex;margin-top:5px}
+.bar i{display:block;height:100%}
+.bar .g{background:var(--green)}.bar .a{background:var(--amber)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:16px}
+h1{font-size:26px;margin:0 0 4px}h2{font-size:20px;margin:0 0 10px}h3{font-size:16px;margin:0 0 6px}
+.sub{color:var(--mute);margin:0 0 18px}
+.hero{display:flex;gap:22px;align-items:center;flex-wrap:wrap;background:linear-gradient(135deg,#0a2540,#1865f2);color:#fff;border:0}
+.ring{width:110px;height:110px;border-radius:50%;display:grid;place-items:center;flex:none;background:conic-gradient(var(--green) calc(var(--p)*1%),rgba(255,255,255,.22) 0)}
+.ring div{width:82px;height:82px;border-radius:50%;background:#0f3d8f;display:grid;place-items:center;font-size:24px;font-weight:700}
+.hero p{margin:2px 0;color:#dbe7ff}
+.btn{border:0;border-radius:8px;padding:10px 18px;font-weight:700;background:var(--blue);color:#fff}
+.btn:hover{background:var(--blue-d)}
+.btn.green{background:var(--green)}.btn.green:hover{background:var(--green-d)}
+.btn.ghost{background:#fff;color:var(--blue);border:1.5px solid var(--blue)}
+.btn.ghost:hover{background:var(--blue-l)}
+.btn.danger{background:#fff;color:var(--red);border:1.5px solid var(--red)}
+.btn.danger:hover{background:var(--red-l)}
+.btn.sm{padding:5px 10px;font-size:13px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.hero .btn.ghost{background:transparent;color:#fff;border-color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-bottom:22px}
+.tcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;text-align:left;border-top:4px solid var(--blue)}
+.tcard.rc{border-top-color:var(--green)}
+.tcard:hover{box-shadow:0 4px 14px rgba(10,37,64,.12)}
+.tcard b{display:block;margin-bottom:2px}
+.tcard small{color:var(--mute)}
+.lesson{border-left:5px solid var(--blue)}
+.tip{background:var(--green-l);border-left:4px solid var(--green);padding:10px 14px;border-radius:6px;margin-top:12px}
+.dots{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.dot{width:34px;height:34px;border-radius:50%;border:2px solid var(--line);background:#fff;font-weight:700;color:var(--mute)}
+.dot.ok{background:var(--green);border-color:var(--green);color:#fff}
+.dot.bad{background:var(--amber);border-color:var(--amber);color:#fff}
+.dot.cur{outline:3px solid var(--blue-l);border-color:var(--blue)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.crumb{background:none;border:0;color:var(--blue);font-weight:600;padding:0;margin-bottom:10px}
+.qhead{display:flex;justify-content:space-between;color:var(--mute);font-size:14px;margin-bottom:8px;gap:10px;flex-wrap:wrap}
+.badge{background:var(--blue-l);color:var(--blue-d);border-radius:10px;padding:2px 9px;font-size:12px;font-weight:700}
+.badge.rc{background:var(--green-l);color:var(--green-d)}
+.badge.amber{background:var(--amber-l);color:#8a5a00}
+.stim{background:#f8fafc;border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:14px;white-space:pre-line}
+.qstem{font-weight:700;margin-bottom:12px}
+.choice{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:11px 13px;margin-bottom:9px;color:var(--ink)}
+.choice:hover:not([disabled]){border-color:var(--blue);background:var(--blue-l)}
+.choice .l{flex:none;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-weight:700;font-size:13px;color:var(--mute)}
+.choice.right{border-color:var(--green);background:var(--green-l)}
+.choice.right .l{background:var(--green);border-color:var(--green);color:#fff}
+.choice.wrong{border-color:var(--red);background:var(--red-l)}
+.choice.wrong .l{background:var(--red);border-color:var(--red);color:#fff}
+.choice[disabled]{cursor:default}
+.fb{border-radius:10px;padding:12px 16px;margin:14px 0 8px;font-weight:700}
+.fb.ok{background:var(--green-l);color:var(--green-d)}.fb.no{background:var(--red-l);color:var(--red)}
+.exp{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.exp ul{list-style:none;padding:0;margin:8px 0 0}
+.exp li{padding:7px 0;border-top:1px solid var(--line);font-size:15px}
+.exp li b.c{color:var(--green-d)}.exp li b.x{color:var(--red)}
+.rcwrap{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.passage{max-height:78vh;overflow:auto;position:sticky;top:72px}
+.passage p{margin:0 0 12px;font-family:Georgia,"Times New Roman",serif;font-size:16.5px;line-height:1.6}
+.stats{display:flex;gap:22px;flex-wrap:wrap;margin-top:8px}
+.stats b{font-size:22px;display:block}
+.stats span{color:#dbe7ff;font-size:13px}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--mute)}
+.tblwrap{overflow-x:auto}
+label{display:block;font-weight:600;font-size:14px;margin-bottom:4px}
+input,select{font:inherit;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;width:100%;background:#fff}
+input:focus,select:focus{outline:none;border-color:var(--blue)}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.misses{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin:8px 0 14px}
+.misses label{font-weight:500;font-size:13px}
+.err{color:var(--red);font-weight:600;margin:8px 0}
+.empty{color:var(--mute);padding:14px;text-align:center}
+.wk{display:grid;grid-template-columns:150px 1fr 70px auto;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
+.wk .bar{margin:0;height:12px}.wk .bar .a{background:var(--blue)}
+.note{font-size:13px;color:var(--mute);margin-top:22px;text-align:center}
+.pill{display:inline-block;padding:2px 9px;border-radius:10px;font-size:12px;font-weight:700}
+.pill.lr{background:var(--blue-l);color:var(--blue-d)}.pill.rc{background:var(--green-l);color:var(--green-d)}
+@media(max-width:860px){
+ .menu{display:block}
+ .brand small{display:none}
+ aside{position:fixed;z-index:15;top:56px;left:0;bottom:0;height:auto;transform:translateX(-102%);transition:transform .2s;box-shadow:4px 0 18px rgba(0,0,0,.18)}
+ aside.open{transform:none}
+ main{padding:14px}
+ .rcwrap{grid-template-columns:1fr}
+ .passage{position:static;max-height:none}
+ .tabs button{padding:0 9px;font-size:14px}
+ .wk{grid-template-columns:110px 1fr 54px;}
+ .wk .go{grid-column:1/-1}
+ h1{font-size:22px}
+ .top{gap:6px;padding:0 8px}
+ .brand{font-size:16px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+ <button class="menu" id="menu" aria-label="Topics">☰</button>
+ <div class="brand">LSAT Study <small>private</small></div>
+ <nav class="tabs" id="tabs">
+  <button data-tab="practice">Practice</button>
+  <button data-tab="tracker">Real tests</button>
+  <button data-tab="data">Data</button>
+ </nav>
+</header>
+<div class="layout" id="layout">
+ <aside id="side"></aside>
+ <main id="main"></main>
+</div>
+<script>
+/* ===== CONTENT: all questions and passages below are ORIGINAL, written for this tool. None is real LSAT text. ===== */
+const TOPICS = [
+ {id:"main",kind:"LR",name:"Main Point",short:"Find the conclusion",
+  lesson:"The main point is the conclusion that the whole argument is built to support. Premises give reasons; the conclusion is what those reasons are for. Look for indicator words such as “therefore,” “thus,” and “consequently,” and for the claim the author is trying to persuade you of. Watch for intermediate conclusions: a claim can be supported by premises and still be used to support something larger.",
+  tip:"Ask of each claim, “Is this being used to support something else?” If so, it is a premise or intermediate conclusion. The main point is the claim that nothing else is there to support. Wrong answers are usually premises or overreach."},
+ {id:"assume",kind:"LR",name:"Assumption",short:"Necessary & sufficient",
+  lesson:"An assumption is an unstated link the argument depends on. A necessary assumption must be true for the argument to work; a sufficient assumption, if added, guarantees the conclusion. Find the gap between the evidence and the conclusion, usually a term in the conclusion that never appears in the premises. Then decide which kind of answer the question wants.",
+  tip:"For necessary assumptions use the negation test: negate the answer, and if the argument collapses, that answer is necessary. For sufficient assumptions, plug the answer in and check whether the conclusion now follows with no gaps."},
+ {id:"strengthen",kind:"LR",name:"Strengthen",short:"Support the argument",
+  lesson:"Strengthen questions ask which new fact makes the conclusion more likely to be true. You do not need to prove it. The best answers usually confirm the assumption, rule out an alternative explanation, or add evidence that fits the author’s hypothesis. Treat the answer choices as true and ask whether the argument looks better.",
+  tip:"In causal arguments, the strongest help is often (a) a control or comparison group, or (b) ruling out another cause. Be careful not to confuse “irrelevant but true” with “helpful.”"},
+ {id:"weaken",kind:"LR",name:"Weaken",short:"Attack the argument",
+  lesson:"Weaken questions ask which fact makes the conclusion less likely. The author’s conclusion can still be true; you are looking for the answer that damages the support. Common moves: offer an alternative cause, show the evidence is unrepresentative, show the link is reversed, or deny the assumption. Treat each choice as true, then ask if the argument now looks shakier.",
+  tip:"A correct weaken answer attacks the connection between evidence and conclusion, not the conclusion on a side issue. Answers about cost, feelings, or motives that do not touch the link are usually traps."},
+ {id:"flaw",kind:"LR",name:"Flaw",short:"Spot the reasoning error",
+  lesson:"Flaw questions ask why the reasoning is vulnerable. The same few errors come up again and again: confusing correlation with causation, treating a necessary condition as sufficient, assuming what is true of the parts is true of the whole (or the reverse), unrepresentative samples, and attacking a person rather than a claim. First find the conclusion and the gap, then match it to the answer that describes it in abstract language.",
+  tip:"Answers are written in abstract terms (“takes for granted that…,” “overlooks the possibility that…”). Translate the argument into that language before reading the choices."},
+ {id:"infer",kind:"LR",name:"Inference",short:"What must be true",
+  lesson:"Inference (“must be true”) questions give you facts and ask what follows. The right answer is not just likely; it is guaranteed by the statements. Combine statements that share a term, and track the logic words carefully: all, some, most, none, only. The correct answer is often modest, saying less than the stimulus does.",
+  tip:"Translate to symbols if needed: “All A are B” does not mean “All B are A,” and “some” means “at least one.” Reject answers that need an extra assumption."},
+ {id:"parallel",kind:"LR",name:"Parallel Reasoning",short:"Match the structure",
+  lesson:"Parallel reasoning questions ask you to find the answer whose argument has the same structure as the one in the stimulus. Subject matter does not matter; form does. Reduce the stimulus to a skeleton (for example, “All A are B; x is not A; so x is not B”), noting the quantifiers and whether the form is valid. Then test each choice against the skeleton.",
+  tip:"Check the conclusion first, then the premises. Eliminate any choice with a different quantifier (all vs. some vs. most), a different negation, or a different validity."},
+ {id:"principle",kind:"LR",name:"Principle",short:"Rules and cases",
+  lesson:"Principle questions work in one of two directions. Either you are given a general rule and must pick the case that fits it, or you are given a specific case and must pick the general rule that would justify it. A good principle is broad enough to cover the case but not so broad that it sweeps in unrelated situations.",
+  tip:"When given a principle, check that each answer’s facts trigger the rule, and watch for “unless”: the rule tells you what happens when the exception does not apply. When justifying a case, reject answers that go much further than the facts."},
+ {id:"paradox",kind:"LR",name:"Paradox / Resolve",short:"Explain the puzzle",
+  lesson:"A paradox question presents two facts that seem to conflict and asks you to explain how both can be true. The right answer introduces a new fact that makes the apparent conflict go away, often by pointing out a difference between two groups, two time periods, or two measures. Wrong answers tend to explain only one half, or deepen the puzzle.",
+  tip:"Say the puzzle out loud: “How can X happen while Y also happens?” Then look for the answer that gives a reason both can be true. Anything that only supports one side is wrong."},
+ {id:"method",kind:"LR",name:"Method of Reasoning",short:"How the argument works",
+  lesson:"Method of reasoning questions ask how the argument proceeds, not whether it is good. Describe what the author does in plain terms: cites a counterexample, argues by analogy, shows a feature is missing, attacks an assumption, or derives an absurd consequence. The right answer will describe the argument’s structure in abstract language that fits what actually happens.",
+  tip:"Make your own short description first (“he gives one case that breaks a general rule”), then find the answer that matches. Reject choices that name a technique the author never uses."}
+];
+const PASSAGES = [
+ {id:"rc1",kind:"RC",name:"Passage 1: Craft Guilds",short:"History / humanities · 6 questions",
+  lesson:"Reading Comprehension rewards reading for structure and voice rather than memorizing details. As you read, note the purpose of each paragraph (describe a view, challenge it, propose a resolution) and where the author’s own opinion appears. Detail questions can be looked up; main idea, attitude, and function questions depend on the big picture. Read the passage once through, then answer.",
+  tip:"Watch for contrast and judgment words (“however,” “tempting,” “hardly surprising”). They show where the author’s voice enters, which drives attitude, function, and main-idea questions.",
+  text:[
+"For much of the twentieth century, economic historians treated the craft guilds of late medieval Europe as little more than cartels. Guild members, on this view, used their control over who could practice a trade to restrict output, keep prices high, and suppress competition from outsiders. The guilds’ elaborate rules about materials, hours, and methods were read as devices for blocking innovation, and the eventual decline of the guilds was celebrated as a precondition of industrial growth.",
+"In recent decades, a revisionist school has challenged this picture. Its members point out that guilds also ran the apprenticeship system, which was for centuries the main way in which skills were passed from one generation to the next. They argue that guild inspection of finished goods gave buyers, who could not easily judge quality for themselves, a reason to trust products bearing a guild’s mark. On this account, the guilds were not obstacles to commerce but institutions that made commerce possible in a world lacking reliable courts and consumer protection laws.",
+"Each school has been able to marshal impressive evidence, and it is tempting to conclude that one must be right and the other wrong. But the evidence suggests a more complicated story. The revisionists draw heavily on records from cities in which guild members were also leading figures in the municipal government, and in such cities the guilds’ rules were frequently tied to real concerns about quality. The older view, by contrast, rests largely on records from places where guilds were closely allied with a monarch who sold them exclusive privileges in return for fees; there, the rules look much more like tools of exclusion. It is hardly surprising that an institution would behave differently depending on who held power over it and what that power rewarded.",
+"If this is correct, the question historians have long asked, whether guilds were good or bad for the economy, is badly formed. A better question asks under what political conditions guilds tended to serve the public and under what conditions they tended to serve only themselves. Answering it will require less sweeping argument and more careful comparison of the circumstances in which particular guilds operated."]},
+ {id:"rc2",kind:"RC",name:"Passage 2: Urban Birdsong",short:"Natural science · 6 questions",
+  lesson:"Science passages often present a phenomenon, a leading explanation, evidence for it, and then complications or rivals. Keep track of which claims are the author’s own and which belong to researchers the author reports on. Qualifiers such as “widely accepted,” “plausible,” and “open question” tell you how much confidence the author has.",
+  tip:"Separate what the author reports from what the author thinks. Many wrong answers on attitude and inference questions overstate the author’s confidence (“conclusively,” “never,” “refuted”).",
+  text:[
+"Ornithologists have long observed that members of several songbird species sing at a higher pitch in cities than their rural counterparts do. The most widely accepted explanation is the masking hypothesis: because traffic and machinery produce mostly low-frequency noise, a bird that sings at a higher pitch is more likely to be heard by potential mates and rivals. On this view, the shift is an adaptation, a response to selective pressure exerted by the acoustic environment.",
+"The hypothesis predicts that the pitch of a species’ song should rise with the level of low-frequency noise in a given location. A number of field studies have confirmed this, and in one widely cited experiment, researchers played recordings of traffic near the nests of rural birds and found that the males began to sing at a higher pitch within days. The speed of that change is significant, because it suggests that, in at least some species, the shift does not require generations of selection but can occur through individual birds adjusting their songs on the fly.",
+"Yet the masking hypothesis does not account for every observation. In some cities, researchers have recorded higher-pitched song among birds living in quiet parks that are well removed from major roads. Proponents of masking respond that young birds learn their songs from neighbors, and a song pattern that arose near a noisy road might spread to quieter areas through imitation, lingering there long after its original rationale disappeared. This is plausible, but it is also difficult to test, and it risks becoming an all-purpose explanation that no evidence could contradict.",
+"A rival proposal holds that the higher pitch results not from noise but from the effects of crowding: in dense populations, males sing more often and more aggressively, and aggressive song tends to be higher pitched. Evidence for this idea is thin, but it has the virtue of making a prediction distinct from that of the masking hypothesis, namely that pitch should rise with the density of birds even in places with little noise. Whether that prediction holds is an open question, and settling it would do more to clarify the matter than further studies of noisy sites alone."]}
+];
+/* q: t=topic id, k=label, s=stimulus, q=question stem, c=5 choices, a=index of correct, e=why correct, w=why wrong (4 entries, in the order the wrong choices appear) */
+const QS = [
+/* ---------- MAIN POINT ---------- */
+{t:"main",s:"Some commentators claim that the city’s new bike lanes have caused downtown traffic congestion. But congestion downtown has been rising steadily for a decade, well before any bike lanes were built. Moreover, the most congested streets are ones that have no bike lanes. Thus, whatever is responsible for the congestion, it is not the bike lanes.",
+ q:"Which one of the following most accurately expresses the main conclusion of the argument?",
+ c:["Downtown traffic congestion has been rising steadily for a decade.","The most congested downtown streets have no bike lanes.","The city’s new bike lanes are not responsible for downtown traffic congestion.","Commentators who blame bike lanes are mistaken about the causes of all traffic problems.","Population growth, rather than bike lanes, is the cause of downtown congestion."],a:2,
+ e:"The word “Thus” marks the conclusion: whatever the cause is, it is not the bike lanes. The decade-long rise and the location of the busiest streets are evidence offered for that claim.",
+ w:["A premise, offered to show that congestion predates the bike lanes.","A second premise, introduced by “Moreover.”","Overreaches. The argument concerns bike lanes and downtown congestion, not all traffic problems.","Goes beyond the argument, which explicitly declines to say what the cause is (“whatever is responsible”)."]},
+{t:"main",s:"Because museum attendance has doubled since free admission on Sundays began, some board members want to make admission free every day. That would be unwise. Free Sundays succeed largely because they are a special occasion that draws people who would not otherwise come. If admission were free every day, it would no longer be special, and the museum would also lose its ticket revenue.",
+ q:"Which one of the following most accurately expresses the main conclusion of the argument?",
+ c:["Museum attendance has doubled since free admission on Sundays began.","Free admission on Sundays has been a success.","The museum should abandon free admission on Sundays.","It would be unwise for the museum to offer free admission every day.","Special occasions draw visitors who would not otherwise come."],a:3,
+ e:"“That would be unwise” is the claim everything else supports: the “special occasion” point and the loss of revenue are reasons for it. The board members’ proposal is what the author argues against.",
+ w:["Background the author accepts and then argues should not be extended to every day. It is not the point of the argument.","Used as a premise (the success depends on specialness). It supports, rather than is, the conclusion.","Not stated or implied. The author is not opposed to free Sundays.","A premise explaining why Sundays work. It is used to argue that daily free admission would not."]},
+{t:"main",s:"Any scientific theory that cannot be tested by observation is not worth pursuing. Theory X predicts nothing that differs from what its rivals predict, so it cannot be tested by observation. Theory X is therefore not worth pursuing. Consequently, funding agencies should not support research on Theory X.",
+ q:"Which one of the following most accurately expresses the main conclusion of the argument?",
+ c:["Any scientific theory that cannot be tested by observation is not worth pursuing.","Theory X cannot be tested by observation.","Theory X is not worth pursuing.","Theory X predicts nothing that differs from what its rivals predict.","Funding agencies should not support research on Theory X."],a:4,
+ e:"The argument is a chain: Theory X predicts nothing different, so it cannot be tested, so it is not worth pursuing, so agencies should not fund it. The last claim (“Consequently…”) is the only one that is not used to support anything further.",
+ w:["The general premise that links untestability to not being worth pursuing.","An intermediate conclusion, supported by the claim about predictions and used to support the next step.","Another intermediate conclusion. It is used to support the final recommendation, so it is not the main point.","The first premise in the chain, supporting the claim that Theory X cannot be tested."]},
+/* ---------- ASSUMPTION ---------- */
+{t:"assume",s:"Employees at Harlan Manufacturing who completed the company’s new safety training last year have had fewer workplace accidents since then than employees who did not complete it. Clearly, the training reduces workplace accidents.",
+ q:"The argument requires assuming which one of the following?",
+ c:["The training was required of every employee at Harlan Manufacturing.","Employees who completed the training were not already less accident-prone than employees who did not.","No employee who completed the training has had a workplace accident since then.","Safety training of this kind would also reduce accidents at other manufacturers.","Workplace accidents are the most expensive problem facing Harlan Manufacturing."],a:1,
+ e:"Negation test: if the trainees were already less accident-prone, the difference could be explained without the training and the conclusion would be unsupported. So the argument needs this to be false, which makes it a necessary assumption.",
+ w:["Not needed. In fact, if everyone were required to take the training, there would be no group that did not complete it to compare with.","Too strong. The evidence is that trainees had fewer accidents, not zero accidents.","The conclusion concerns accidents at Harlan only, so other manufacturers are irrelevant.","Cost is irrelevant to whether the training reduces accidents."]},
+{t:"assume",s:"The firm hires any candidate who has both strong writing skills and relevant experience. Dana, a candidate, has strong writing skills. So the firm will hire Dana.",
+ q:"The conclusion follows logically if which one of the following is assumed?",
+ c:["Dana has relevant experience.","The firm hires only candidates who have strong writing skills.","Dana will be hired only if she has relevant experience.","Most candidates with relevant experience also have strong writing skills.","Dana is the only candidate with strong writing skills."],a:0,
+ e:"The rule says writing skills AND experience are sufficient for being hired. The premises supply writing skills only, so the missing piece is that Dana has relevant experience. With it, the conclusion is guaranteed.",
+ w:["Reverses the rule: it gives a necessary condition for being hired, not a sufficient one, and says nothing about Dana.","States a necessary condition for being hired. It does not tell us that Dana has the experience, so she might still not be hired.","“Most” gives no guarantee about Dana in particular.","Being the only candidate with writing skills does not supply the missing experience."]},
+{t:"assume",s:"The mayor claims that the new transit line will reduce downtown traffic. But the line serves only neighborhoods on the city’s north side, while most people who drive downtown live elsewhere. So the line will not noticeably reduce downtown traffic.",
+ q:"Which one of the following is an assumption required by the argument?",
+ c:["The transit line will be completed on schedule.","No one other than commuters drives downtown.","Too few north-side residents who now drive downtown would switch to the line for it to noticeably reduce downtown traffic.","Public transit lines in other cities have failed to reduce traffic.","The mayor has underestimated the cost of the line."],a:2,
+ e:"The argument notes that most downtown drivers live elsewhere, but some do live on the north side. For the conclusion to hold, those north-side drivers cannot be numerous or willing enough to cut traffic noticeably. If many would switch, the conclusion fails.",
+ w:["The argument is about the line’s effect once it operates, not the schedule.","Not needed. The argument does not claim only commuters drive downtown.","What happens in other cities is irrelevant to this city’s line.","Cost has nothing to do with whether the line affects traffic."]},
+/* ---------- STRENGTHEN ---------- */
+{t:"strengthen",s:"A survey found that office workers who keep houseplants at their desks report higher job satisfaction than workers who do not. The researchers concluded that having houseplants at one’s desk increases job satisfaction.",
+ q:"Which one of the following, if true, most strengthens the researchers’ conclusion?",
+ c:["Most workers who keep houseplants at their desks bought the plants themselves.","In an experiment, workers randomly given desk plants later reported higher job satisfaction than workers who were not given plants.","Some workers who report high job satisfaction do not keep houseplants at their desks.","Houseplants are inexpensive and easy to maintain.","Workers who keep houseplants at their desks have, on average, been with their employers longer than workers who do not."],a:1,
+ e:"Random assignment rules out the possibility that happier people simply choose to keep plants. It shows the plants themselves raised satisfaction, which is the causal claim.",
+ w:["Suggests self-selection: people who choose plants may already be happier. If anything this undermines the causal claim.","Compatible with plants raising satisfaction on average. Exceptions do not strengthen the claim.","Cost and ease of care say nothing about whether plants cause satisfaction.","Offers an alternative explanation (time at the job), so it weakens the conclusion."]},
+{t:"strengthen",s:"After the city of Bramford imposed a tax on sugary drinks, sales of those drinks in Bramford fell by 20 percent over the following year. City officials conclude that the tax was responsible for the decline.",
+ q:"Which one of the following, if true, most strengthens the officials’ conclusion?",
+ c:["Nationwide, sales of sugary drinks have been declining slowly for several years.","The tax raised a substantial amount of revenue for the city.","A local newspaper endorsed the tax before it took effect.","During the same year, sales of sugary drinks were essentially unchanged in nearby towns that had no such tax.","Residents of Bramford drink more sugary drinks per person than the national average."],a:3,
+ e:"Nearby towns without the tax serve as a comparison group. If sales did not fall there, a general trend or some outside event is a less likely explanation for Bramford’s drop.",
+ w:["Offers an alternative cause, a general downward trend, so it weakens the officials’ conclusion.","Revenue says nothing about whether the tax caused the 20 percent fall in sales.","An endorsement has no bearing on what caused the sales decline.","Baseline consumption does not show that the tax caused the change."]},
+{t:"strengthen",s:"At the ancient settlement of Karel, the style of locally found pottery changed gradually over two centuries, ending with designs typical of a distant coastal region. Archaeologists hypothesize that the change reflects the gradual arrival of people from that coastal region who settled at Karel, rather than merely the adoption of coastal designs by Karel’s original inhabitants.",
+ q:"Which one of the following, if true, most strengthens the archaeologists’ hypothesis?",
+ c:["Potters in the coastal region were renowned in the ancient world for their distinctive designs.","Trade routes connected Karel with the coastal region throughout the two centuries.","Skeletal remains from Karel’s later burials show physical traits typical of the coastal region’s population but not of Karel’s earlier population.","The earliest pottery found at Karel was cruder than its later pottery.","In many ancient cultures, pottery styles changed gradually over time."],a:2,
+ e:"The hypothesis is about people arriving, not just designs spreading. Evidence that the later population physically resembled the coastal population directly supports migration rather than mere imitation.",
+ w:["Fame of the designs could just as well explain why Karel’s original inhabitants copied them, which favors the rival explanation.","Trade routes would make it easy to adopt designs without anyone moving, so this favors the rival explanation.","The quality of the craft does not bear on who was making the pottery.","A general fact about style change is compatible with either explanation."]},
+/* ---------- WEAKEN ---------- */
+{t:"weaken",s:"Last March, Dunmore Industries moved its staff into a new open-plan office. In the following quarter, employee productivity rose by 8 percent. The CEO concluded that the open-plan design raised productivity.",
+ q:"Which one of the following, if true, most seriously weakens the CEO’s conclusion?",
+ c:["Some Dunmore employees say they find the open-plan office noisy.","Open-plan offices are less expensive to build than traditional offices.","Productivity rose by about 8 percent in the same quarter at Dunmore’s other branches, which kept their traditional offices.","The method Dunmore uses to measure productivity was the same before and after the move.","The CEO’s bonus depends in part on the company’s productivity."],a:2,
+ e:"If productivity rose by the same amount where nothing changed, something other than the office design likely explains the increase. That undercuts the causal claim.",
+ w:["Noise complaints are compatible with higher productivity. They do not show the design failed to raise it.","Cost is irrelevant to whether the design raised productivity.","Strengthens the conclusion by ruling out a change in measurement as the explanation.","A motive to believe something does not show the data are wrong or that another cause is at work."]},
+{t:"weaken",s:"The decline in the Mill Pond frog population began the year after a new species of fish was introduced into the pond. A biologist therefore concluded that the fish are responsible for the decline.",
+ q:"Which one of the following, if true, most seriously weakens the biologist’s conclusion?",
+ c:["The fish were introduced to control mosquitoes in the area.","Frogs are an important food source for several species of birds that visit the pond.","The fish are known to eat the eggs of other amphibian species.","Mill Pond is a popular destination for tourists.","Frog populations declined by a similar amount over the same period in nearby ponds into which the fish were never introduced."],a:4,
+ e:"If frogs declined equally in ponds without the fish, something other than the fish is the likely cause. That is an alternative cause.",
+ w:["The reason for the introduction does not bear on whether the fish caused the decline.","Birds eating frogs would not show that the fish did not contribute, and nothing says birds changed.","Strengthens the conclusion by suggesting a mechanism: fish eating amphibian eggs.","Tourism is not connected to the fish or the frogs in anything stated."]},
+{t:"weaken",s:"Studies show that students who take music lessons earn higher grades in mathematics than students who do not. Therefore, schools that want to raise their students’ math grades should require all students to take music lessons.",
+ q:"Which one of the following, if true, most seriously weakens the argument?",
+ c:["Music teachers are in short supply in many regions.","Families that can afford music lessons for their children generally also provide other academic advantages, such as private tutoring.","Some students who take music lessons earn low grades in mathematics.","Students typically find music lessons more enjoyable than math classes.","Music lessons have been shown to improve students’ memory."],a:1,
+ e:"If the students who take lessons already have other advantages that raise math grades, the grade difference may not be caused by the lessons. Requiring lessons for everyone then would not be expected to produce the same gains.",
+ w:["A practical obstacle. It does not challenge the claim that lessons would raise math grades.","Consistent with an average difference. Exceptions do not undermine a general trend.","Enjoyment is irrelevant to whether lessons raise math grades.","Strengthens the argument by giving a way lessons could improve math performance."]},
+/* ---------- FLAW ---------- */
+{t:"flaw",s:"Over the past ten years, the number of crimes reported at the Glen Park mall has risen steadily, and so has the number of security guards the mall employs. Obviously, at this mall, hiring more security guards leads to more crime.",
+ q:"The reasoning in the argument is flawed because the argument",
+ c:["overlooks the possibility that more crime led the mall to hire more security guards","draws a conclusion about malls in general on the basis of a single mall","assumes that a condition necessary for crime is sufficient to produce it","dismisses a claim without addressing it by attacking the people who made it","uses the key term “crime” in two different senses"],a:0,
+ e:"The argument sees two things rising together and concludes that guards cause crime, ignoring that the direction may be reversed: rising crime may have prompted the hiring.",
+ w:["The conclusion is explicitly about “this mall,” so there is no generalization to other malls.","The argument makes no claim about necessary or sufficient conditions.","No person or source is attacked.","“Crime” is used consistently."]},
+{t:"flaw",s:"To win a seat on the school board, a candidate must receive a majority of the votes cast. Ms. Ortiz received a majority of the votes cast. Therefore, Ms. Ortiz won a seat on the school board.",
+ q:"The reasoning in the argument is flawed because the argument",
+ c:["takes for granted that a majority of voters is always correct","treats a condition that is necessary for winning a seat as if it were sufficient","draws a general conclusion about all candidates from the case of a single candidate","relies on an authority whose expertise is irrelevant","uses the term “majority” in two different senses"],a:1,
+ e:"The first sentence gives a necessary condition for winning (a majority). The argument treats it as sufficient. Other requirements, such as eligibility or the seat count, could still keep her from winning.",
+ w:["The argument makes no claim about whether voters are correct.","The conclusion is about Ms. Ortiz only.","No authority is cited.","“Majority” is used the same way in the premises."]},
+{t:"flaw",s:"Every member of the city’s negotiating committee is a highly skilled negotiator. Therefore, the committee, as a group, will be a highly skilled negotiating body.",
+ q:"The reasoning in the argument is flawed because the argument",
+ c:["relies on the testimony of a source that has a motive to exaggerate","presents as its conclusion a claim that was already assumed in a premise","confuses a condition that is merely necessary with one that is sufficient","infers that a group has a certain property merely because each of its members has that property","draws a conclusion from a sample too small to be representative"],a:3,
+ e:"A group’s performance depends on how its members work together, not just on their individual skills. A team of excellent individuals can still be a poor team. The argument fails to consider this.",
+ w:["No source or testimony is involved.","The premise (individual skill) and conclusion (group skill) are different claims, so the argument is not circular.","No conditional claims are made.","The premise covers every member, so no sample is involved."]},
+/* ---------- INFERENCE ---------- */
+{t:"infer",s:"All of Marlowe’s Bakery’s sourdough loaves are baked before 6 a.m. Some of the loaves baked before 6 a.m. sell out by 8 a.m. Every loaf sold at Marlowe’s farmers’-market stall is a sourdough loaf.",
+ q:"If the statements above are true, which one of the following must also be true?",
+ c:["Some of Marlowe’s sourdough loaves sell out by 8 a.m.","Every loaf baked before 6 a.m. at Marlowe’s is a sourdough loaf.","Every loaf sold at the farmers’-market stall was baked before 6 a.m.","No loaf sold at the farmers’-market stall sells out by 8 a.m.","Some loaves sold at the farmers’-market stall were baked after 6 a.m."],a:2,
+ e:"Chain the statements: stall loaves are sourdough, and sourdough loaves are baked before 6 a.m., so every stall loaf was baked before 6 a.m.",
+ w:["The loaves that sell out by 8 a.m. might all be non-sourdough.","Reverses the first statement. Other kinds of bread could also be baked before 6 a.m.","Nothing is said about whether stall loaves sell out.","Contradicted by the chain: stall loaves are all sourdough, hence all baked before 6 a.m."]},
+{t:"infer",s:"A program has 120 students. Of these, 80 took the statistics course and 70 took the economics course. Every student in the program took at least one of the two courses.",
+ q:"If the statements above are true, which one of the following must also be true?",
+ c:["Fewer than 25 students took both courses.","Exactly 40 students took statistics but not economics.","More students took economics only than took statistics only.","At least 100 students took exactly one of the two courses.","Exactly 30 students took both courses."],a:4,
+ e:"80 + 70 = 150, which is 30 more than the 120 students. Since each student took at least one course, the 30 extra are students counted twice, so exactly 30 took both. (Statistics only = 50, economics only = 40.)",
+ w:["Exactly 30 took both, so this is false.","Statistics only is 80 − 30 = 50, not 40.","Economics only is 40, which is fewer than statistics only (50).","Exactly one course: 50 + 40 = 90, which is fewer than 100."]},
+{t:"infer",s:"Some professors who teach evening classes also hold administrative posts. Every professor who holds an administrative post has a reduced teaching load.",
+ q:"If the statements above are true, which one of the following must also be true?",
+ c:["Every professor with a reduced teaching load holds an administrative post.","Some professors with a reduced teaching load do not teach evening classes.","Most professors who teach evening classes hold administrative posts.","Some professors who teach evening classes have a reduced teaching load.","No professor who teaches evening classes lacks an administrative post."],a:3,
+ e:"The professors who teach evening classes and hold administrative posts all have reduced loads. So at least some evening professors have a reduced load.",
+ w:["Reverses the second statement. Other reasons for a reduced load are possible.","Nothing is said about professors with reduced loads who do not teach evening classes. It could be that all of them teach evenings.","“Some” does not establish “most.”","“Some” does not establish that all evening professors hold administrative posts."]},
+/* ---------- PARALLEL ---------- */
+{t:"parallel",s:"Every licensed pilot has passed a vision test. Julian is not a licensed pilot. Therefore, Julian has not passed a vision test.",
+ q:"The flawed pattern of reasoning in the argument above is most similar to that in which one of the following?",
+ c:["All of the orchard’s apples are sprayed before harvest. This apple was sprayed before harvest. So this apple came from the orchard.","Every student who passes the final exam receives credit. Lena did not receive credit. Therefore, Lena did not pass the final exam.","All lawyers at the firm have passed the bar. Some employees of the firm are lawyers. So some employees of the firm have passed the bar.","Every violinist in the orchestra has practiced the piece. Priya is not a violinist in the orchestra. So Priya has not practiced the piece.","No member of the choir is a member of the band. Nadia is a member of the choir. Therefore, Nadia is not a member of the band."],a:3,
+ e:"Skeleton: All A are B; x is not A; so x is not B (denying the antecedent). Choice D matches exactly: every violinist practiced; Priya is not a violinist; so she did not practice.",
+ w:["Flawed, but a different flaw: All A are B; x is B; so x is A (affirming the consequent).","Valid reasoning (the contrapositive): All A are B; x is not B; so x is not A.","Valid reasoning, and the conclusion is “some,” not a denial.","Valid reasoning: No A is B; x is A; so x is not B."]},
+{t:"parallel",s:"Any play that wins the festival’s top prize is staged at the national theater. Any play staged at the national theater is reviewed by the major newspapers. Hence, any play that wins the festival’s top prize is reviewed by the major newspapers.",
+ q:"The pattern of reasoning in the argument above is most similar to that in which one of the following?",
+ c:["Any sculpture accepted by the gallery is displayed in the main hall. Some sculptures displayed in the main hall are photographed for the catalog. Hence, some sculptures accepted by the gallery are photographed for the catalog.","Any film shown at the festival is subtitled. Any film that is subtitled is accessible to foreign audiences. Hence, any film accessible to foreign audiences is shown at the festival.","Any recipe that wins the cookbook contest is printed in the anthology. Any recipe printed in the anthology is tested by the editors. Hence, any recipe that wins the cookbook contest is tested by the editors.","Any bridge inspected in spring is repaired in summer. This bridge was repaired in summer. Hence, this bridge was inspected in spring.","Any poem the editor selects is published. Not every published poem is reprinted. Hence, some poems the editor selects are not reprinted."],a:2,
+ e:"The skeleton is a valid chain: All A are B; all B are C; so all A are C. Only the recipe argument has this exact form.",
+ w:["Invalid: “some” sculptures in the hall need not be among those accepted by the gallery. Different form as well.","Reverses the conclusion: All A are B; all B are C; so all C are A. Invalid.","Affirms the consequent: single case, with a different (invalid) pattern.","Invalid: the poems that are published but not reprinted might not be among those the editor selects."]},
+{t:"parallel",s:"Some of the plants in the greenhouse are orchids. All of the plants in the greenhouse are kept above 60 degrees. Therefore, some orchids are kept above 60 degrees.",
+ q:"The pattern of reasoning in the argument above is most similar to that in which one of the following?",
+ c:["Some of the drivers in the race are rookies. Most of the drivers in the race are sponsored. Therefore, some rookies are sponsored.","All of the cars in the lot are sedans. Some sedans are red. Therefore, some cars in the lot are red.","Some of the students in the seminar are first-years. Some first-years have not finished their theses. Therefore, some students in the seminar have not finished their theses.","Most of the apples in the basket are ripe. All of the apples in the basket are organic. Therefore, most organic apples are ripe.","Some of the volunteers at the shelter are retirees. All of the volunteers at the shelter have passed a background check. Therefore, some retirees have passed a background check."],a:4,
+ e:"Skeleton (valid): Some X in group G are Y; all members of G are Z; so some Y are Z. Choice E has exactly this form.",
+ w:["Invalid: “some” rookies and “most” sponsored drivers need not overlap, and the “most” statement differs from “all.”","Invalid: the red sedans need not be among the cars in the lot, and the form is different.","Invalid: two “some” statements do not have to overlap.","Invalid: “most” of one group does not transfer to the larger group of organic apples."]},
+/* ---------- PRINCIPLE ---------- */
+{t:"principle",s:"A person who makes a promise is obligated to keep it unless keeping it would require doing something illegal or would cause serious harm to a third party.",
+ q:"Which one of the following judgments most closely conforms to the principle above?",
+ c:["Tamsin promised to attend a colleague’s retirement party but would rather go to a concert, so she is not obligated to attend.","Ivan promised to repay a friend $50 on Friday, but doing so would leave him short on his own rent, so he is not obligated to repay it.","Omar promised to keep a colleague’s secret, but doing so would require him to lie under oath in court, so he is obligated to keep it.","Priya promised to cover a coworker’s Saturday shift. Covering it will be inconvenient for her but is legal and will harm no one, so she is obligated to cover it.","Hana promised to sell her car to Leo, but a second buyer offered more money, so she is obligated to sell it to the second buyer."],a:3,
+ e:"The only exceptions are illegality and serious harm to a third party. Priya’s promise triggers neither, so under the principle she is obligated. Inconvenience is not an exception.",
+ w:["A preference for something else is not an exception, so the principle says she is obligated.","Harm to himself is not harm to a third party, and repaying is not illegal, so he is still obligated.","Lying under oath is illegal, which is an exception, so he is not obligated. The judgment contradicts the principle.","The principle says nothing that releases her from the promise to Leo because a better offer came along."]},
+{t:"principle",s:"A city engineer argued that the old Ferry Street footbridge should be closed immediately, even though it has never collapsed and no one has ever been hurt on it. Inspections show that its supports are corroding so quickly that a collapse within a year is likely, and schoolchildren cross the bridge daily.",
+ q:"Which one of the following principles, if valid, most helps to justify the engineer’s reasoning?",
+ c:["A public structure should be closed when there is strong evidence that it is likely to cause serious harm to its users, whether or not anyone has yet been harmed.","A public structure should be closed whenever it shows any sign of wear.","The safety of children should take priority over every other public expenditure.","A public structure should be closed only after someone has been harmed by it.","Public officials should always follow the recommendations of engineers regardless of cost."],a:0,
+ e:"The engineer’s reasoning is that a likely and serious danger justifies closing the bridge even without past harm. Choice A states exactly that and covers the facts without going much further.",
+ w:["Too broad. Any wear is far less than the likely collapse described.","Concerns ranking expenditures, not whether to close a structure.","Contradicts the engineer’s reasoning, which is to close the bridge before anyone is harmed.","Goes too far (always, regardless of cost) and rests on authority rather than the danger."]},
+{t:"principle",s:"Kim’s landlord was within his legal rights when he raised her rent in the middle of her lease, since a clause buried in the lease permitted it. Nonetheless, Kim argues that the increase is unjust, because the landlord never mentioned the clause when she signed and she had no reasonable opportunity to notice it.",
+ q:"Which one of the following principles, if valid, most helps to justify Kim’s argument?",
+ c:["Landlords should never raise rent during a lease.","Any term that is legally valid is also just to enforce.","A person who signs a contract is responsible for reading and understanding all of its terms.","Rent increases are unjust whenever they exceed the rate of inflation.","It is unjust to enforce a contract term against a party who had no reasonable opportunity to learn of it, even if the term is legally valid."],a:4,
+ e:"Kim concedes the clause is legal but argues it is unjust because she could not reasonably have known about it. Choice E states that principle precisely.",
+ w:["Too broad. Kim’s objection is about the hidden clause, not mid-lease increases in general.","Contradicts Kim’s argument, which depends on a legal term being unjust.","Opposes Kim’s position by placing the burden on her to read everything.","Introduces inflation, which has nothing to do with her argument."]},
+/* ---------- PARADOX ---------- */
+{t:"paradox",s:"Over the past five years, the number of people riding the Tri-County commuter rail has increased every year. Nevertheless, the rail line’s total annual fare revenue has declined over the same period.",
+ q:"Which one of the following, if true, most helps to resolve the apparent discrepancy described above?",
+ c:["The cost of operating the commuter rail has risen over the past five years.","Over the past five years the rail line introduced deeply discounted multi-ride passes, and most riders now use them.","Most riders of the commuter rail travel to jobs in the city center.","Ridership on the region’s buses has also increased over the past five years.","Fares on commuter rail lines in other regions have risen over the past five years."],a:1,
+ e:"Revenue depends on both the number of rides and the average fare paid. If most riders shifted to deeply discounted passes, revenue per rider fell, which can outweigh the rise in ridership.",
+ w:["Operating cost is not revenue.","Where riders go does not explain falling revenue.","Bus ridership is a different service and says nothing about rail revenue.","Fares elsewhere do not explain what happened on this line."]},
+{t:"paradox",s:"About the same number of anglers fished Lake Verity this season as last season. This season they caught fewer trout than anglers did last season, even though the lake was stocked with twice as many trout this season as last season.",
+ q:"Which one of the following, if true, most helps to resolve the apparent discrepancy described above?",
+ c:["Lake Verity was stocked with trout in both seasons.","The trout stocked this season belong to a larger variety than those stocked in the past.","A fungus that spread through the lake this season killed most of the newly stocked trout within weeks of their release.","Lake Verity is one of the most popular fishing destinations in the region.","Most of the trout that anglers catch at Lake Verity are eaten rather than released."],a:2,
+ e:"If most of the newly stocked trout died, there were not actually more trout in the lake to catch, even though more were stocked. That explains the lower catch.",
+ w:["Adds no explanation for the drop in the catch.","Larger trout would not explain fewer being caught.","Popularity does not explain why the catch fell given similar numbers of anglers.","What anglers do with the fish after catching them is irrelevant to the number caught."]},
+{t:"paradox",s:"The average score of students at Hatfield School on the state exam rose this year. Yet the average score of the students in every individual grade at Hatfield fell this year.",
+ q:"Which one of the following, if true, most helps to resolve the apparent discrepancy described above?",
+ c:["The state exam was more difficult this year than last year.","Students at Hatfield typically score lower at the start of the school year than at the end.","Hatfield hired several additional teachers this year.","This year, a larger share of Hatfield’s students than last year were in the upper grades, whose students score higher on the exam than lower-grade students do.","Exam scores at schools neighboring Hatfield also fell this year."],a:3,
+ e:"The school-wide average depends on the mix of students. If more students are in the higher-scoring grades, the overall average can rise even though every grade’s average fell.",
+ w:["A harder exam would help explain why scores fell in each grade, but it makes the rise in the school-wide average harder to explain.","Applies equally to both years, so it does not explain the difference.","Hiring teachers does not explain a higher overall average alongside lower grade-level averages.","Other schools’ scores do not explain Hatfield’s overall average."]},
+/* ---------- METHOD ---------- */
+{t:"method",s:"Some economists argue that corporate tax cuts always create jobs. But consider Zarco Corporation, which received a large tax cut last year and then closed three of its factories and cut its workforce by a third. So it is false that corporate tax cuts always create jobs.",
+ q:"The argument proceeds by",
+ c:["attacking the motives of those who hold the opposing view","rejecting a universal claim by citing a counterexample","arguing that a claim must be true because no one has shown it to be false","showing that the opposing claim, if accepted, would lead to a self-contradiction","drawing a general conclusion from a statistical survey"],a:1,
+ e:"The claim is universal (“always”). The author offers a single case, Zarco, that is supposed to break it. That is a counterexample.",
+ w:["No one’s motives are discussed.","The argument does not appeal to a lack of disproof.","The opposing claim is not shown to be self-contradictory.","One company is described, not a survey."]},
+{t:"method",s:"Critic: Reviewers have praised the new novel for its realism. But a work is realistic only if it faithfully depicts ordinary life, and the novel’s plot depends on a series of wildly improbable coincidences. Thus the praise is unwarranted.",
+ q:"The critic’s argument proceeds by",
+ c:["arguing that a term has been used ambiguously","questioning the qualifications of the reviewers","citing evidence that an unusual event is likely to recur","arguing from the similarity of two works to the conclusion that they deserve the same praise","arguing that a description does not apply to something because it lacks a feature that the description requires"],a:4,
+ e:"The critic says realism requires a faithful depiction of ordinary life; the novel lacks that; so “realistic” does not apply to it. That is a required feature that is missing.",
+ w:["The term “realism” is not shown to be ambiguous.","The reviewers’ qualifications are never questioned.","The coincidences are in the novel’s plot and are not evidence of anything recurring.","Only one work is discussed, so there is no comparison between works."]},
+{t:"method",s:"Trusting the result of a single study is like judging a restaurant by a single meal. One meal may be unusually good or bad by chance, and so may one study’s result. In both cases a reliable verdict requires repeated trials.",
+ q:"The argument proceeds by",
+ c:["appealing to the authority of experts in the field","offering a causal explanation for an observed correlation","supporting a claim about one kind of case by pointing to a similar, more familiar kind of case","deriving an absurd consequence from the view being opposed","presenting a counterexample to a generalization"],a:2,
+ e:"The author argues by analogy: a single study is like a single meal, so the same caution applies. The familiar case (the meal) is used to support the claim about the less familiar one (the study).",
+ w:["No expert is cited.","No correlation or cause is explained.","No absurd result is derived from an opposing view.","No generalization is being opposed."]}
+];
+/* ---------- READING COMPREHENSION ---------- */
+QS.push(
+{t:"rc1",k:"Main idea",q:"Which one of the following most accurately expresses the main point of the passage?",
+ c:["Historians who regard guilds as cartels have misread the records of the cities they studied.","Guilds were institutions that made commerce possible, and their decline was therefore harmful to economic growth.","Neither the view that guilds were cartels nor the view that they guaranteed quality is adequate on its own; because guilds seem to have behaved differently under different political conditions, historians should compare those conditions.","The records on which the older school relied are less reliable than those on which the revisionists rely.","Guilds served the public when they were controlled by city governments and harmed it when they were allied with monarchs."],a:2,
+ e:"The passage lays out two views, says each has good evidence, suggests that political context explains the difference, and recommends a new question about the conditions under which guilds served the public.",
+ w:["The author never says the older historians misread their records; the author says each school has impressive evidence.","The passage attributes the “made commerce possible” view to the revisionists, and says nothing about whether the guilds’ decline was harmful.","The author does not compare reliability. The difference is in the political setting of the records.","Too definitive. The author says guilds “tended to” behave differently and that more comparison is needed."]},
+{t:"rc1",k:"Detail",q:"According to the passage, revisionist historians argue that guild inspection of finished goods",
+ c:["reduced the prices that buyers had to pay","gave buyers a reason to trust goods bearing a guild’s mark","helped guilds secure exclusive privileges from monarchs","allowed guilds to settle disputes among their members without courts","taught apprentices the skills of their trades"],a:1,
+ e:"Paragraph two says inspection gave buyers, who could not judge quality themselves, a reason to trust goods bearing a guild’s mark.",
+ w:["Not mentioned. Higher prices are associated with the older view of guilds.","Monarchs’ privileges are part of the older view, not a result of inspection.","Courts are mentioned only as lacking, and settling disputes is not attributed to inspection.","Training of apprentices is a separate guild function."]},
+{t:"rc1",k:"Inference",q:"Which one of the following is most strongly supported by the passage?",
+ c:["Most late medieval guilds were closely allied with a monarch.","A guild that operated in a city governed by its own members would not have restricted competition.","Evidence drawn from only one kind of political setting is an unreliable basis for a general conclusion about the effects of guilds.","Buyers in late medieval Europe preferred goods bearing a guild’s mark to all other goods.","Apprenticeship was less important in cities where guilds were allied with monarchs."],a:2,
+ e:"The author explains the disagreement by showing that each school’s evidence comes from a different political setting, and says guilds behaved differently under different conditions. So single-setting evidence cannot support a general conclusion.",
+ w:["The passage never says how common such alliances were.","Too strong. The passage says the rules were “frequently” tied to quality concerns, not that competition was never restricted.","Too strong. The passage says only that a guild’s mark gave buyers a reason to trust goods.","Nothing in the passage compares apprenticeship across settings."]},
+{t:"rc1",k:"Author attitude",q:"The author’s attitude toward the older view of guilds is best described as",
+ c:["outright rejection on the grounds that it rests on unreliable records","agreement that it is largely correct, with only minor qualifications","indifference, since the evidence cannot settle the question","acceptance as accurate in some political settings, but rejection as a general account","suspicion that its proponents were hostile to guilds"],a:3,
+ e:"The author grants that the older view fits places where guilds were allied with monarchs (“the rules look much more like tools of exclusion”) but says it does not hold in general and recasts the question.",
+ w:["The author calls the evidence impressive and never calls the records unreliable.","The author thinks the story is “more complicated” and the old question is “badly formed,” which is more than minor qualification.","The author is not indifferent. The author proposes a better question and a method for answering it.","The author never discusses anyone’s motives."]},
+{t:"rc1",k:"Function",q:"The author’s statement in the third paragraph that “It is hardly surprising that an institution would behave differently depending on who held power over it and what that power rewarded” primarily serves to",
+ c:["concede that the revisionists’ evidence is stronger than that of the older school","introduce a new body of evidence about guild behavior","criticize older historians for ignoring the role of monarchs","suggest that the conflict between the two bodies of evidence has an unsurprising explanation","argue that guilds acted in the same way regardless of political circumstances"],a:3,
+ e:"The sentence follows the contrast between the two sets of records and says that differing behavior under differing political conditions is to be expected. It makes the conflict between the schools look less puzzling.",
+ w:["The author treats each school’s evidence as impressive and never ranks them.","The sentence is a general observation, not new evidence.","The older historians are not criticized for ignoring monarchs; their evidence comes from places where monarchs mattered.","The sentence says the opposite: behavior varies with circumstances."]},
+{t:"rc1",k:"Organization",q:"Which one of the following best describes the organization of the passage?",
+ c:["A traditional view is stated and defended against two objections, and a further objection is then anticipated.","Two opposing interpretations are described, a possible reason for their disagreement is proposed, and a different line of inquiry is recommended.","A historical phenomenon is described, its causes are enumerated, and its effects on later developments are assessed.","A new theory is presented, evidence for it is surveyed, and rival theories are shown to be inconsistent with that evidence.","A debate is summarized, one side is shown to have misinterpreted its evidence, and the other side’s view is endorsed."],a:1,
+ e:"Paragraphs one and two describe the two views, paragraph three proposes that political setting explains the difference, and paragraph four recommends a better question and method.",
+ w:["The traditional view is not defended by the author.","Causes and effects of guilds are not enumerated and assessed; the passage is about how to interpret them.","No new theory is surveyed and no rival theory refuted.","Neither side is shown to have misread its evidence, and the author endorses neither."]},
+/* birdsong */
+{t:"rc2",k:"Main idea",q:"Which one of the following most accurately expresses the main point of the passage?",
+ c:["Urban songbirds have evolved higher-pitched songs over many generations of selection by traffic noise.","Experiments in which traffic recordings were played to rural birds have conclusively shown that noise causes the rise in pitch.","The masking hypothesis is the leading explanation of higher-pitched urban birdsong, but it leaves some observations unexplained, and testing a rival proposal could help settle the question.","Songbirds raise the pitch of their songs primarily because crowding makes males more aggressive.","Because young birds learn songs from their neighbors, the pitch of birdsong cannot be explained by features of the environment."],a:2,
+ e:"The passage presents the masking hypothesis and its support, notes observations it does not explain, and closes by suggesting that testing the crowding proposal’s distinct prediction would help.",
+ w:["The passage says the shift may not require generations of selection, since birds can adjust within days.","“Conclusively” overstates the evidence. The author says only that the result suggests an adjustment in some species.","Crowding is a rival proposal with thin evidence, not the author’s conclusion.","Imitation is offered by masking proponents as a response and does not mean the environment is irrelevant."]},
+{t:"rc2",k:"Detail",q:"The passage describes the result of the experiment in the second paragraph as significant because it",
+ c:["was conducted in cities rather than in rural areas","showed that crowding is not a factor in birdsong pitch","showed that young birds learn their songs from neighboring birds","involved a number of different species of songbird","suggests that birds can alter the pitch of their songs within days"],a:4,
+ e:"The passage says the speed of the change suggests the shift does not require generations, since individual birds can adjust their songs.",
+ w:["The recordings were played near the nests of rural birds.","Crowding is not mentioned in connection with the experiment.","Song learning is discussed in the third paragraph, not tied to the experiment.","The passage does not say how many species were involved. It says “in at least some species.”"]},
+{t:"rc2",k:"Inference",q:"The passage most strongly supports which one of the following?",
+ c:["Birds living in quiet parks never sing at a higher pitch than birds living in rural areas.","The masking hypothesis has been refuted by studies of birds in quiet parks.","Aggressive song is higher pitched than non-aggressive song in all songbird species.","Traffic noise contains little low-frequency sound.","A finding that pitch rises with population density even in quiet habitats would be harder for the masking hypothesis to explain than for the crowding proposal."],a:4,
+ e:"The author says the crowding proposal predicts a rise in pitch with density even where there is little noise, a prediction distinct from masking’s. So such a finding would fit crowding more readily.",
+ w:["Contradicted by the passage: researchers have recorded higher-pitched song in quiet parks.","Too strong. Masking proponents have a response, which the author calls plausible.","Too strong. The passage says aggressive song “tends to be” higher pitched, and this is part of an unproven proposal.","Contradicts the first paragraph, which says traffic and machinery produce mostly low-frequency noise."]},
+{t:"rc2",k:"Author attitude",q:"The author’s attitude toward the response of masking proponents described in the third paragraph is best described as",
+ c:["unqualified approval of an effective rebuttal","grudging acknowledgment that it is plausible, coupled with concern that it is hard to test and may be too flexible","scornful rejection of it as an implausible excuse","neutral reporting with no evaluation of its merits","complete confidence that it will be confirmed by future studies"],a:1,
+ e:"The author says “This is plausible, but it is also difficult to test, and it risks becoming an all-purpose explanation that no evidence could contradict.” That is acceptance of plausibility with a warning.",
+ w:["The author raises concerns, so approval is not unqualified.","The author calls the response plausible, so it is not scorned.","The author evaluates it directly.","The author expresses no confidence about future confirmation and says it is hard to test."]},
+{t:"rc2",k:"Function",q:"The author mentions that the crowding proposal makes a prediction distinct from that of the masking hypothesis primarily in order to",
+ c:["show that the masking hypothesis has been disproved","concede that the crowding proposal is better supported than the masking hypothesis","explain why a weakly supported proposal is nonetheless useful to investigate","provide additional evidence in favor of the masking hypothesis","argue that studies of noisy sites should be abandoned"],a:2,
+ e:"The author admits the evidence is thin but says the proposal has the virtue of making a testable, different prediction, which would help settle the matter.",
+ w:["Masking is not described as disproved.","The author calls the evidence for crowding “thin,” so it is not better supported.","The mention is about the crowding proposal, not evidence for masking.","The author says only that settling this would help more than further studies of noisy sites alone, not that those should stop."]},
+{t:"rc2",k:"Function",q:"The second paragraph primarily serves to",
+ c:["present evidence that supports the hypothesis introduced in the first paragraph","introduce a rival hypothesis to the one described in the first paragraph","describe observations that the hypothesis from the first paragraph cannot explain","show that the hypothesis from the first paragraph cannot be tested","explain how young birds learn their songs"],a:0,
+ e:"The paragraph states a prediction of the masking hypothesis, reports field studies and an experiment that confirm it, and notes what the experiment suggests.",
+ w:["The rival (crowding) proposal appears in the fourth paragraph.","Observations that masking does not explain appear in the third paragraph.","The paragraph describes tests that were carried out, so it does not say the hypothesis is untestable.","Song learning comes up in the third paragraph, as part of the proponents’ response."]}
+);
+/* ===== APP ===== */
+const ALL = TOPICS.concat(PASSAGES);
+const counters = {};
+QS.forEach(q => { counters[q.t] = (counters[q.t] || 0) + 1; q.id = q.t + "-" + counters[q.t]; });
+const LETTERS = ["A","B","C","D","E"];
+const KEY = "lsat-study-v1";
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function load(){ try{ const r = JSON.parse(localStorage.getItem(KEY)); if(r && r.answers && Array.isArray(r.tests)) return r; }catch(e){} return {answers:{},tests:[]}; }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+let S = load();
+let V = {tab:"practice", topic:null, quiz:null};
+const topicOf = id => ALL.find(t => t.id === id);
+const qsOf = id => QS.filter(q => q.t === id);
+function stats(ids){
+  let total=0, correct=0, missed=0;
+  QS.forEach(q => { if(ids && ids.indexOf(q.t) < 0) return; total++; const a = S.answers[q.id]; if(a){ if(a.correct) correct++; else missed++; } });
+  return {total, correct, missed, left: total-correct-missed};
+}
+function bar(st){ return '<div class="bar"><i class="g" style="width:'+(100*st.correct/st.total)+'%"></i><i class="a" style="width:'+(100*st.missed/st.total)+'%"></i></div>'; }
+const missedIds = tid => QS.filter(q => (!tid || q.t === tid) && S.answers[q.id] && !S.answers[q.id].correct).map(q => q.id);
+
+/* ---------- sidebar ---------- */
+function renderSide(){
+  const o = stats();
+  let h = '<button class="sb-item'+(V.topic==null&&!V.quiz?' on':'')+'" data-home="1"><div class="nm"><span>Overview</span><span>'+Math.round(100*o.correct/o.total)+'%</span></div>'+bar(o)+'</button>';
+  [["LR","Logical Reasoning",TOPICS],["RC","Reading Comprehension",PASSAGES]].forEach(g => {
+    h += '<div class="sb-h">'+g[1]+'</div>';
+    g[2].forEach(t => {
+      const st = stats([t.id]);
+      h += '<button class="sb-item'+(V.topic===t.id?' on':'')+'" data-topic="'+t.id+'"><div class="nm"><span>'+esc(t.name)+'</span><span>'+st.correct+'/'+st.total+'</span></div>'+bar(st)+'</button>';
+    });
+  });
+  const m = missedIds().length;
+  h += '<div class="sb-h">Review</div><button class="sb-item" data-retry="all"'+(m?'':' disabled')+'><div class="nm"><span>Retry missed</span><span>'+m+'</span></div></button>';
+  $("#side").innerHTML = h;
+}
+
+/* ---------- practice: home ---------- */
+function viewHome(){
+  const o = stats(), pct = Math.round(100*o.correct/o.total), m = missedIds().length;
+  let h = '<h1>Practice</h1><p class="sub">Original LSAT-style questions in Logical Reasoning and Reading Comprehension. Pick a topic, read the short lesson, then practice.</p>';
+  h += '<div class="card hero"><div class="ring" style="--p:'+pct+'"><div>'+pct+'%</div></div><div><h2 style="margin:0">Overall mastery</h2><p>Mastery is the share of all practice questions you most recently answered correctly.</p><div class="stats"><div><b>'+o.correct+'</b><span>correct</span></div><div><b>'+o.missed+'</b><span>missed</span></div><div><b>'+o.left+'</b><span>not tried</span></div><div><b>'+o.total+'</b><span>questions</span></div></div><div class="row" style="margin-top:14px"><button class="btn ghost" data-retry="all"'+(m?'':' disabled')+'>Retry missed ('+m+')</button></div></div></div>';
+  [["Logical Reasoning","LR",TOPICS],["Reading Comprehension","RC",PASSAGES]].forEach(g => {
+    h += '<h2>'+g[0]+'</h2><div class="grid">';
+    g[2].forEach(t => { const st = stats([t.id]);
+      h += '<button class="tcard '+(g[1]==="RC"?"rc":"")+'" data-topic="'+t.id+'"><b>'+esc(t.name)+'</b><small>'+esc(t.short)+'</small>'+bar(st)+'<small>'+st.correct+' of '+st.total+' correct'+(st.missed?' · '+st.missed+' missed':'')+'</small></button>'; });
+    h += '</div>';
+  });
+  return h;
+}
+
+/* ---------- practice: topic page ---------- */
+function dotsHtml(tid, cur){
+  return '<div class="dots">'+qsOf(tid).map((q,i) => { const a = S.answers[q.id]; return '<button class="dot'+(a?(a.correct?' ok':' bad'):'')+(cur===i?' cur':'')+'" data-jump="'+q.id+'" title="Question '+(i+1)+'">'+(i+1)+'</button>'; }).join("")+'</div>';
+}
+function viewTopic(){
+  const t = topicOf(V.topic), st = stats([t.id]), m = missedIds(t.id).length;
+  let h = '<button class="crumb" data-home="1">← All topics</button><h1>'+esc(t.name)+'</h1><p class="sub"><span class="pill '+(t.kind==="LR"?"lr":"rc")+'">'+(t.kind==="LR"?"Logical Reasoning":"Reading Comprehension")+'</span> &nbsp;'+st.correct+' of '+st.total+' correct</p>';
+  h += '<div class="card lesson"><h3>Lesson</h3><p style="margin:0">'+esc(t.lesson)+'</p><div class="tip"><b>Tip:</b> '+esc(t.tip)+'</div></div>';
+  h += '<div class="card"><h3>Your progress</h3>'+bar(st)+dotsHtml(t.id)+'<div class="row"><button class="btn green" data-start="'+t.id+'">'+(st.left===st.total?"Start practice":(st.left? "Continue":"Practice again"))+'</button><button class="btn ghost" data-retry="'+t.id+'"'+(m?'':' disabled')+'>Retry missed ('+m+')</button></div></div>';
+  return h;
+}
+
+/* ---------- practice: quiz ---------- */
+function startQuiz(ids, topic, mode, startAt){
+  if(!ids.length) return;
+  V.topic = topic; V.quiz = {ids, i:startAt||0, mode, done:false, choice:null, right:0, wrong:0};
+  render();
+}
+function viewQuiz(){
+  const Z = V.quiz;
+  if(Z.done){
+    const t = Z.topic ? "" : "";
+    let h = '<div class="card"><h2>Session complete</h2><p>You answered <b>'+Z.right+'</b> correctly and missed <b>'+Z.wrong+'</b> in this session.</p><div class="row">';
+    h += '<button class="btn" data-'+(V.topic?'topic="'+V.topic+'"':'home="1"')+'>'+(V.topic?'Back to topic':'Back to overview')+'</button>';
+    const m = missedIds(V.topic).length;
+    h += '<button class="btn ghost" data-retry="'+(V.topic||"all")+'"'+(m?'':' disabled')+'>Retry missed ('+m+')</button></div></div>';
+    return h;
+  }
+  const q = QS.find(x => x.id === Z.ids[Z.i]), t = topicOf(q.t), prev = S.answers[q.id];
+  const answered = Z.choice != null;
+  let h = '<button class="crumb" data-topic="'+t.id+'">← '+esc(t.name)+'</button>';
+  h += '<div class="qhead"><div><span class="badge'+(t.kind==="RC"?" rc":"")+'">'+esc(t.kind==="RC"?(q.k||"Reading"):t.name)+'</span> '+(Z.mode==="retry"?'<span class="badge amber">Retry missed</span>':'')+'</div><div>Question '+(Z.i+1)+' of '+Z.ids.length+'</div></div>';
+  let qbox = '';
+  if(q.s) qbox += '<div class="stim">'+esc(q.s)+'</div>';
+  qbox += '<div class="qstem">'+esc(q.q)+'</div>';
+  q.c.forEach((c,i) => {
+    let cls = "choice";
+    if(answered){ if(i===q.a) cls += " right"; else if(i===Z.choice) cls += " wrong"; }
+    qbox += '<button class="'+cls+'" data-choice="'+i+'"'+(answered?' disabled':'')+'><span class="l">'+LETTERS[i]+'</span><span>'+esc(c)+'</span></button>';
+  });
+  if(answered){
+    const ok = Z.choice === q.a;
+    qbox += '<div class="fb '+(ok?'ok':'no')+'" id="fb">'+(ok?'Correct!':'Not quite. The correct answer is '+LETTERS[q.a]+'.')+'</div>';
+    qbox += '<div class="exp"><b>Explanation, choice by choice</b><ul>';
+    let wi = 0;
+    q.c.forEach((c,i) => {
+      if(i===q.a) qbox += '<li><b class="c">'+LETTERS[i]+' ✓ correct.</b> '+esc(q.e)+'</li>';
+      else qbox += '<li><b class="x">'+LETTERS[i]+' ✗ wrong.</b> '+esc(q.w[wi++]||"")+(i===Z.choice?' <i>(your answer)</i>':'')+'</li>';
+    });
+    qbox += '</ul></div><div class="row" style="margin-top:14px"><button class="btn green" data-next="1">'+(Z.i+1<Z.ids.length?'Next question':'Finish')+'</button></div>';
+  }
+  if(t.kind==="RC"){
+    h += '<div class="rcwrap"><div class="card passage"><h3>'+esc(t.name)+'</h3>'+t.text.map(p => '<p>'+esc(p)+'</p>').join("")+'</div><div class="card">'+qbox+'</div></div>';
+  } else h += '<div class="card">'+qbox+'</div>';
+  return h;
+}
+function choose(i){
+  const Z = V.quiz, q = QS.find(x => x.id === Z.ids[Z.i]);
+  if(Z.choice != null) return;
+  Z.choice = i;
+  const ok = i === q.a, prev = S.answers[q.id];
+  S.answers[q.id] = {choice:i, correct:ok, tries:(prev?prev.tries:0)+1, ever:(prev&&prev.ever)||!ok};
+  if(ok) Z.right++; else Z.wrong++;
+  save(); render();
+  const fb = $("#fb"); if(fb && fb.scrollIntoView) fb.scrollIntoView({block:"nearest",behavior:"smooth"});
+}
+function nextQ(){
+  const Z = V.quiz; Z.choice = null;
+  if(Z.i+1 < Z.ids.length) Z.i++; else Z.done = true;
+  render(); window.scrollTo(0,0);
+}
+
+/* ---------- tracker ---------- */
+const MISS_TYPES = {
+  LR: TOPICS.map(t => ({key:t.id, label:t.name, topic:t.id})),
+  RC: [["rcMain","Main idea"],["rcDetail","Detail"],["rcInfer","Inference"],["rcAttitude","Author attitude"],["rcFunction","Function / organization"]].map(a => ({key:a[0], label:"RC: "+a[1], topic:"rc1"}))
+};
+const TYPE_BY_KEY = {}; MISS_TYPES.LR.concat(MISS_TYPES.RC).forEach(t => TYPE_BY_KEY[t.key] = t);
+let trkSection = "LR", trkErr = "";
+const today = () => { const d = new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); };
+function missGrid(){ return MISS_TYPES[trkSection].map(t => '<div><label for="m_'+t.key+'">'+esc(t.label)+'</label><input type="number" min="0" step="1" inputmode="numeric" id="m_'+t.key+'" data-miss="'+t.key+'" placeholder="0"></div>').join(""); }
+function chartSvg(){
+  const ts = S.tests.slice().sort((a,b) => (a.date||"").localeCompare(b.date||"") || a.id - b.id);
+  if(!ts.length) return '<div class="empty">Log a test to see your score trend.</div>';
+  const W=640,H=260,L=40,R=16,T=16,B=36, n=ts.length;
+  const x = i => n===1 ? (L+W-R)/2 : L + (W-L-R)*i/(n-1);
+  const y = p => T + (H-T-B)*(1-p/100);
+  let s = '<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="Score trend chart" id="chart">';
+  [0,25,50,75,100].forEach(p => { s += '<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(p)+'" y2="'+y(p)+'" stroke="#e3e6eb"/><text x="'+(L-6)+'" y="'+(y(p)+4)+'" font-size="11" text-anchor="end" fill="#5f6673">'+p+'%</text>'; });
+  [["LR","#1865f2"],["RC","#14a37f"]].forEach(g => {
+    const pts = []; ts.forEach((t,i) => { if(t.section===g[0]) pts.push([x(i), y(100*t.correct/t.total), t]); });
+    if(pts.length>1) s += '<polyline fill="none" stroke="'+g[1]+'" stroke-width="2.5" points="'+pts.map(p => p[0]+","+p[1]).join(" ")+'"/>';
+    pts.forEach(p => { s += '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="5" fill="'+g[1]+'"><title>'+esc(p[2].name)+" ("+p[2].date+") "+p[2].correct+"/"+p[2].total+" = "+Math.round(100*p[2].correct/p[2].total)+'%</title></circle>'; });
+  });
+  ts.forEach((t,i) => { if(n<=8 || i%Math.ceil(n/8)===0) s += '<text x="'+x(i)+'" y="'+(H-14)+'" font-size="10.5" text-anchor="middle" fill="#5f6673">'+esc((t.date||"").slice(5))+'</text>'; });
+  s += '</svg><div class="row" style="justify-content:center;font-size:13px;gap:18px"><span><b style="color:#1865f2">●</b> Logical Reasoning</span><span><b style="color:#14a37f">●</b> Reading Comprehension</span></div>';
+  return s;
+}
+function weakHtml(){
+  const tot = {}; let any = 0;
+  S.tests.forEach(t => Object.keys(t.misses||{}).forEach(k => { tot[k] = (tot[k]||0) + t.misses[k]; any += t.misses[k]; }));
+  const rows = Object.keys(tot).filter(k => tot[k] > 0 && TYPE_BY_KEY[k]).sort((a,b) => tot[b]-tot[a]);
+  if(!rows.length) return '<div class="empty">'+(S.tests.length?'No per-type misses logged yet. Add them when you log a test to see your weak spots.':'Log a test with per-type misses to see your weak spots.')+'</div>';
+  const max = tot[rows[0]];
+  return rows.map((k,i) => { const ty = TYPE_BY_KEY[k], p = stats([ty.topic]);
+    return '<div class="wk"><div><b>'+esc(ty.label)+'</b></div><div class="bar"><i class="a" style="width:'+(100*tot[k]/max)+'%"></i></div><div>'+tot[k]+' missed</div><div class="go"><button class="btn sm '+(i<3?'green':'ghost')+'" data-topic="'+ty.topic+'">'+(i<3?'Practice: ':'')+esc(topicOf(ty.topic).name)+' →</button></div></div>'; }).join("")
+   + '<p class="sub" style="margin:10px 0 0">Based on '+any+' logged misses. The top three are highlighted in green.</p>';
+}
+function viewTracker(){
+  let h = '<h1>Real-test tracker</h1><p class="sub">Take real, timed sections on <a href="https://www.lsac.org/lawhub" target="_blank" rel="noopener">LSAC LawHub</a>, then log the results here. This site does not contain or copy any real test questions.</p>';
+  h += '<div class="card"><h2>Log a section</h2><form id="tf"><div class="form">'
+    + '<div><label for="t_name">Test name</label><input id="t_name" placeholder="e.g. PrepTest 101" maxlength="60"></div>'
+    + '<div><label for="t_date">Date</label><input id="t_date" type="date" value="'+today()+'"></div>'
+    + '<div><label for="t_sec">Section</label><select id="t_sec"><option value="LR"'+(trkSection==="LR"?" selected":"")+'>Logical Reasoning</option><option value="RC"'+(trkSection==="RC"?" selected":"")+'>Reading Comprehension</option></select></div>'
+    + '<div><label for="t_total">Questions</label><input id="t_total" type="number" min="1" step="1" inputmode="numeric" placeholder="e.g. 25"></div>'
+    + '<div><label for="t_correct">Number correct</label><input id="t_correct" type="number" min="0" step="1" inputmode="numeric" placeholder="e.g. 20"></div></div>'
+    + '<h3 style="margin-top:16px">Optional: how many did you miss, by question type?</h3><div class="misses" id="misses">'+missGrid()+'</div>'
+    + '<div class="err" id="terr">'+esc(trkErr)+'</div><button class="btn green" type="submit" id="t_add">Add to tracker</button></form></div>';
+  h += '<div class="card"><h2>Logged tests</h2>';
+  if(!S.tests.length) h += '<div class="empty">No tests logged yet.</div>';
+  else {
+    const ts = S.tests.slice().sort((a,b) => (b.date||"").localeCompare(a.date||"") || b.id - a.id);
+    h += '<div class="tblwrap"><table id="ttable"><thead><tr><th>Date</th><th>Test</th><th>Section</th><th>Score</th><th>%</th><th>Misses by type</th><th></th></tr></thead><tbody>'
+      + ts.map(t => { const ms = Object.keys(t.misses||{}).filter(k => t.misses[k]>0 && TYPE_BY_KEY[k]).map(k => esc(TYPE_BY_KEY[k].label)+" ×"+t.misses[k]).join(", ");
+        return '<tr><td>'+esc(t.date)+'</td><td>'+esc(t.name)+'</td><td><span class="pill '+(t.section==="LR"?"lr":"rc")+'">'+t.section+'</span></td><td>'+t.correct+'/'+t.total+'</td><td><b>'+Math.round(100*t.correct/t.total)+'%</b></td><td>'+(ms||'<span style="color:#5f6673">—</span>')+'</td><td><button class="btn danger sm" data-deltest="'+t.id+'">Delete</button></td></tr>'; }).join("")
+      + '</tbody></table></div>';
+  }
+  h += '</div><div class="card"><h2>Score trend</h2>'+chartSvg()+'</div>';
+  h += '<div class="card"><h2>Weak spots by question type</h2>'+weakHtml()+'</div>';
+  return h;
+}
+function addTest(e){
+  e.preventDefault();
+  const total = parseInt($("#t_total").value,10), correct = parseInt($("#t_correct").value,10);
+  const section = $("#t_sec").value, date = $("#t_date").value || today();
+  const name = $("#t_name").value.trim() || "Untitled test";
+  const misses = {}; let sum = 0;
+  document.querySelectorAll("[data-miss]").forEach(inp => { const v = parseInt(inp.value,10); if(v>0){ misses[inp.dataset.miss] = v; sum += v; } });
+  trkErr = "";
+  if(!(total>0)) trkErr = "Enter how many questions were in the section.";
+  else if(isNaN(correct) || correct<0 || correct>total) trkErr = "Number correct must be between 0 and "+total+".";
+  else if(sum > total-correct) trkErr = "You listed "+sum+" misses by type, but only "+(total-correct)+" questions were missed.";
+  if(trkErr){ $("#terr").textContent = trkErr; return; }
+  S.tests.push({id:Date.now()+Math.floor(Math.random()*1000), name, date, section, total, correct, misses});
+  save(); render();
+}
+
+/* ---------- data ---------- */
+function download(name, text, mime){
+  const blob = new Blob([text], {type:mime}), url = URL.createObjectURL(blob), a = document.createElement("a");
+  a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1500);
+}
+function csvCell(v){ v = String(v); return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; }
+function exportJson(){ download("lsat-study-data-"+today()+".json", JSON.stringify({exported:new Date().toISOString(), answers:S.answers, tests:S.tests}, null, 2), "application/json"); }
+function exportCsv(){
+  const rows = [["date","test","section","questions","correct","percent","misses_by_type"]];
+  S.tests.slice().sort((a,b) => (a.date||"").localeCompare(b.date||"")).forEach(t => rows.push([t.date,t.name,t.section,t.total,t.correct,Math.round(100*t.correct/t.total),Object.keys(t.misses||{}).map(k => (TYPE_BY_KEY[k]?TYPE_BY_KEY[k].label:k)+" x"+t.misses[k]).join("; ")]));
+  download("lsat-test-log-"+today()+".csv", rows.map(r => r.map(csvCell).join(",")).join("\n"), "text/csv");
+}
+function viewData(){
+  const o = stats();
+  return '<h1>Your data</h1><p class="sub">Everything is stored only in this browser on this device (localStorage). Nothing is uploaded anywhere.</p>'
+   + '<div class="card"><h2>Export</h2><p>Practice progress: '+(o.correct+o.missed)+' of '+o.total+' questions attempted. Logged tests: '+S.tests.length+'.</p><div class="row"><button class="btn" id="exp_json">Export everything (JSON)</button><button class="btn ghost" id="exp_csv">Export test log (CSV)</button></div></div>'
+   + '<div class="card"><h2>Reset</h2><p>Erases all practice progress and all logged tests from this browser. Export first if you want a copy.</p><div class="row"><button class="btn danger" id="reset_prog">Reset practice progress</button><button class="btn danger" id="reset_all">Reset everything</button></div></div>';
+}
+
+/* ---------- render ---------- */
+function render(){
+  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.tab === V.tab));
+  $("#layout").classList.toggle("nosb", V.tab !== "practice");
+  $("#menu").style.display = V.tab === "practice" ? "" : "none";
+  let h;
+  if(V.tab === "practice"){ renderSide(); h = V.quiz ? viewQuiz() : (V.topic ? viewTopic() : viewHome()); }
+  else if(V.tab === "tracker") h = viewTracker();
+  else h = viewData();
+  $("#main").innerHTML = h + '<p class="note">All practice questions and passages are original and written for personal study. They are not real LSAT questions. Real tests: <a href="https://www.lsac.org/lawhub" target="_blank" rel="noopener">LSAC LawHub</a>.</p>';
+  $("#side").classList.remove("open");
+}
+document.addEventListener("click", e => {
+  const el = e.target.closest("button, a"); if(!el) return;
+  const d = el.dataset;
+  if(el.id === "menu"){ $("#side").classList.toggle("open"); return; }
+  if(d.tab){ V.tab = d.tab; V.quiz = null; render(); window.scrollTo(0,0); return; }
+  if(d.home){ V.tab = "practice"; V.topic = null; V.quiz = null; render(); window.scrollTo(0,0); return; }
+  if(d.topic){ V.tab = "practice"; V.topic = d.topic; V.quiz = null; render(); window.scrollTo(0,0); return; }
+  if(d.start){ const ids = qsOf(d.start).map(q => q.id); let at = ids.findIndex(id => !S.answers[id]); if(at<0) at = 0; startQuiz(ids, d.start, "normal", at); window.scrollTo(0,0); return; }
+  if(d.jump){ const q = QS.find(x => x.id===d.jump), ids = qsOf(q.t).map(x => x.id); startQuiz(ids, q.t, "normal", ids.indexOf(q.id)); window.scrollTo(0,0); return; }
+  if(d.retry){ const tid = d.retry==="all" ? null : d.retry; const ids = missedIds(tid); if(ids.length){ V.tab = "practice"; startQuiz(ids, tid, "retry", 0); window.scrollTo(0,0);} return; }
+  if(d.choice != null){ choose(parseInt(d.choice,10)); return; }
+  if(d.next){ nextQ(); return; }
+  if(d.deltest){ if(confirm("Delete this logged test?")){ S.tests = S.tests.filter(t => String(t.id) !== d.deltest); save(); render(); } return; }
+  if(el.id === "exp_json") exportJson();
+  if(el.id === "exp_csv") exportCsv();
+  if(el.id === "reset_prog" && confirm("Erase all practice progress? Logged tests are kept.")){ S.answers = {}; save(); V = {tab:"data",topic:null,quiz:null}; render(); }
+  if(el.id === "reset_all" && confirm("Erase ALL data (practice progress and logged tests)? This cannot be undone.")){ S = {answers:{},tests:[]}; save(); V = {tab:"data",topic:null,quiz:null}; render(); }
+});
+document.addEventListener("change", e => { if(e.target.id === "t_sec"){ trkSection = e.target.value; $("#misses").innerHTML = missGrid(); } });
+document.addEventListener("submit", e => { if(e.target.id === "tf") addTest(e); });
+render();
+</script>
+</body>
+</html>
